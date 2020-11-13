@@ -134,11 +134,11 @@ if __name__ == "__main__":
 
     # Order doesn't matter here
     # B-case LOCKED
-    oname2 = outloc / "pr_events_6hr_B1850_c201_CLOCK.nc"
+    oname2 = outloc / "pr_events_6hr_tovrlp_B1850_c201_CLOCK.nc"
     lock_labels.to_netcdf(oname2)
 
     # B-case CONTROL
-    oname3 = outloc / "pr_events_6hr_B1850_c201_CTL.nc"
+    oname3 = outloc / "pr_events_6hr_tovrlp_B1850_c201_CTL.nc"
     cntl_labels.to_netcdf(oname3)
 
 
