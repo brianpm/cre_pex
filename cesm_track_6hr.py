@@ -120,8 +120,6 @@ if __name__ == "__main__":
     #
     cntl_labels.name = "precip_events"
     lock_labels.name = "precip_events"
-    bc_labels.name = "precip_events"
-    clock_labels.name = "precip_events"
     outloc = Path("/project/amp02/brianpm/")
 
     if 'type' in cntl_labels.coords:
