@@ -28,7 +28,7 @@ def get_tropics_quantiles(da, threshold=None, q=0.99):
     
 
 def cesm_rmland(d):
-    land_f = xr.open_dataset("/Users/brianpm/Dropbox/Data/cesm2_f09_land.nc")
+    land_f = xr.open_dataset("/project/amp02/brianpm/cesm_landfrac.nc")
     landx = land_f['LANDFRAC'].squeeze()
     land0, _ = xr.broadcast(landx, d)
     return d.where(land0 <= 0)
@@ -97,20 +97,13 @@ def cesm_pr_label_workflow(
 
 if __name__ == "__main__":
     ## LOCKING RUNS ARE NOT IN CMIP FORMAT
-    flock = xr.open_dataset('/Volumes/Samsung_T5/F1850JJB_c201_CLOCK.cam.h2.ncrcat.PRECT.nc')
-    flock = cesm_fix_timedim(flock)
-    fc = xr.open_dataset('/Volumes/Samsung_T5/F1850JJB_c201_CTL.cam.h2.ncrcat.PRECT.nc')
-    fc = cesm_fix_timedim(fc)
-    p_cntl = fc['PRECT']*86400.*1000.  # m/s -> mm/day
-    p_lock = flock['PRECT']*86400.*1000.
-
-    ## Coupled runs
-    clock = xr.open_dataset('/Volumes/Samsung_T5/B1850_c201_CLOCK/daily/B1850_c201_CLOCK.cam.h2.ncrcat.PRECT.nc')
-    clock = cesm_fix_timedim(clock)
-    cc = xr.open_dataset('/Volumes/Samsung_T5/B1850_c201_CTL/daily/B1850_c201_CTL.cam.h2.ncrcat.PRECT.nc')
-    cc = cesm_fix_timedim(cc)
-    p_cc = cc['PRECT']*86400.*1000.  # m/s -> mm/day
-    p_clock = clock['PRECT']*86400.*1000.
+    dloc = Path("/project/amp02/brianpm")
+    ctl_ds = xr.open_dataset(dloc / 'B1850_c201_CTL.cam.h4.PRECT.nc', decode_times=False)
+    lck_ds = xr.open_dataset(dloc / 'B1850_c201_CLOCK.cam.h4.PRECT.nc', decode_times=False)
+    ctl_ds = cesm_fix_timedim(ctl_ds)
+    lck_ds = cesm_fix_timedim(lck_ds)
+    p_cntl = ctl_ds['PRECT']*86400.*1000.  # m/s -> mm/day
+    p_lock = lck_ds['PRECT']*86400.*1000.
 
     cntl_labels, lock_labels = cesm_pr_label_workflow(
         p_cntl,
@@ -120,19 +113,8 @@ if __name__ == "__main__":
         latitude=slice(-30,30),
         lon_wrap=True,
     )
-    summarize_events(cntl_labels, "CESM2", "F-control")
-    summarize_events(lock_labels, "CESM2", "F-lock")
-    bc_labels, clock_labels = cesm_pr_label_workflow(
-        p_cc,
-        p_clock,
-        remove_land=True,
-        label="3d",
-        latitude=slice(-30,30),
-        lon_wrap=True,
-    )
-    summarize_events(bc_labels, "CESM2", "C-control")
-    summarize_events(clock_labels, "CESM2", "C-lock")  # "C" stands for coupled
-
+    summarize_events(cntl_labels, "CESM2", "control")
+    summarize_events(lock_labels, "CESM2", "lock")
     #
     # Save labeled events so as to enable easier filtering
     #
@@ -140,7 +122,7 @@ if __name__ == "__main__":
     lock_labels.name = "precip_events"
     bc_labels.name = "precip_events"
     clock_labels.name = "precip_events"
-    outloc = Path("/Volumes/Glyph6TB/cloud_locking/pr_events/")
+    outloc = Path("/project/amp02/brianpm/")
 
     if 'type' in cntl_labels.coords:
         if cntl_labels['type'].shape == ():
@@ -150,30 +132,14 @@ if __name__ == "__main__":
         if lock_labels['type'].shape == ():
             lock_labels = lock_labels.drop('type')
 
-    if 'type' in bc_labels.coords:
-        if bc_labels['type'].shape == ():
-            bc_labels = bc_labels.drop('type')
-
-    if 'type' in clock_labels.coords:
-        if clock_labels['type'].shape == ():
-            clock_labels = clock_labels.drop('type')
-
     # Order doesn't matter here
-    # F-case LOCKED
-    oname0 = outloc / "pr_events_F1850JJB_c201_CLOCK.nc"
-    lock_labels.to_netcdf(oname0)
-
-    # F-case CONTROL
-    oname1 = outloc / "pr_events_F1850JJB_c201_CTL.nc"
-    cntl_labels.to_netcdf(oname1)
-
     # B-case LOCKED
-    oname2 = outloc / "pr_events_B1850_c201_CLOCK.nc"
-    clock_labels.to_netcdf(oname2)
+    oname2 = outloc / "pr_events_6hr_B1850_c201_CLOCK.nc"
+    lock_labels.to_netcdf(oname2)
 
     # B-case CONTROL
-    oname3 = outloc / "pr_events_B1850_c201_CTL.nc"
-    bc_labels.to_netcdf(oname3)
+    oname3 = outloc / "pr_events_6hr_B1850_c201_CTL.nc"
+    cntl_labels.to_netcdf(oname3)
 
 
 
