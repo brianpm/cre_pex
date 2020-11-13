@@ -113,8 +113,8 @@ if __name__ == "__main__":
         latitude=slice(-30,30),
         lon_wrap=True,
     )
-    summarize_events(cntl_labels, "CESM2", "control")
-    summarize_events(lock_labels, "CESM2", "lock")
+    dt.summarize_events(cntl_labels, "CESM2", "control")
+    dt.summarize_events(lock_labels, "CESM2", "lock")
     #
     # Save labeled events so as to enable easier filtering
     #
