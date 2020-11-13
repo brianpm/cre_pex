@@ -48,6 +48,7 @@ def cesm_pr_label_workflow(
     label="2d",
     latitude=None,
     lon_wrap=True,
+    connect=None
 ):
     """Uses daily precipitation data for 2 simulations, 
     calculates the 99th percentile of tropical precipitation,
@@ -78,12 +79,12 @@ def cesm_pr_label_workflow(
         track = True
 
     m0_labels, m0_nfeatures = dt.pr_labeler(
-        pr0, m0_threshold, track=track, latitude=latitude
+        pr0, m0_threshold, track=track, latitude=latitude, connect=connect
     )
 
 
     m1_labels, m1_nfeatures = dt.pr_labeler(
-        pr1, m1_threshold, track=track, latitude=latitude
+        pr1, m1_threshold, track=track, latitude=latitude, connect=connect
     )
 
     if lon_wrap:
@@ -112,6 +113,7 @@ if __name__ == "__main__":
         label="3d",
         latitude=slice(-30,30),
         lon_wrap=True,
+        connect=1
     )
     dt.summarize_events(cntl_labels, "CESM2", "control")
     dt.summarize_events(lock_labels, "CESM2", "lock")
