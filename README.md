@@ -86,3 +86,9 @@ A few additional files are included.
 - `preliminary_lwoff_precipitation_response.ipynb` : this was probably the first notebook that started the project following initial conversations among the authors. Already in this notebook a lot of the main conclusions are being sketched out, and some of the figures come out of this first look at the LWoff experiments.
 - `revision_check_fig3_confidence.ipynb` : this is where we did bootstrapped confidence intervals to make sure that Figure 3 is significant.
 - `tracker_explainer.ipynb` : some tests of the tracking method; in particular, I was exploring how different structure matrices impact the tracking to approximate merging/splitting.
+
+## Data files
+I saved zonal means, quantiles, and histograms as intermediate files to speed up some analysis. I'm including them in the repository because they are small. The file names provide some indication of processing (e.g., region), but I **strongly advise** to use these only for testing purposes, and re-calculate them from the original CMIP files. 
+
+## Contact
+Contact me for additional details regarding analysis. This is **not a software package**, and I provide it with no support. The intention is to document the code used for the paper for purposes of transparency. Even if you are attempting to reproduce the results, I advise that you develop your own codes to do it, and compare with the included codes and the paper. I can try to help with reasonable inquiries. CMIP data can be downloaded from the ESGF [https://esgf-node.llnl.gov/search/cmip6/]. The cloud-locking data is available on [Zenodo](https://www.zenodo.org) (doi: `10.5281/zenodo.3591996`). 
