@@ -80,7 +80,7 @@ A few additional files are included.
 - `esgf_download_cmip6.ipynb` : a notebook that has some functions that search/download CMIP6 data. This notebook is in a messy state, but the functions do work, and may be useful. 
 - `extreme_precip_prw_amon.ipynb` : a quick look at the zonal mean changes in integrated water vapor.
 - `extreme_precip_track_viz.ipynb` : some preliminary visual analysis to validate the detection and tracking method.
-- `extreme_precip_wap_profiles.ipynb` : som analysis of the vertical velocity profiles. Mentioned in the paper, but CMIP files have so few levels that these profiles do not seem very useful beyond the obvious reduction in ascent in convective regimes.
+- `extreme_precip_wap_profiles.ipynb` : analysis of the vertical velocity profiles. Mentioned in the paper, but CMIP files have so few levels that these profiles do not seem very useful beyond the obvious reduction in ascent in convective regimes.
 - `extreme_precipitation_functions.py` : an incomplete module; has a function to get duration and size of events.
 - `mean_stability.ipynb` : an incomplete analysis of atmospheric stability, used as part of the discussion of the TTL stability and the 4xCO2 experiments. 
 - `preliminary_lwoff_precipitation_response.ipynb` : this was probably the first notebook that started the project following initial conversations among the authors. Already in this notebook a lot of the main conclusions are being sketched out, and some of the figures come out of this first look at the LWoff experiments.
